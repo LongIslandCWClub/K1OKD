@@ -101,9 +101,16 @@ def mk_stage2():
         print(" QRP", end='')
     print(" <BT>")
     print("MY ANT", myAnt, "UP", myAntHeight, "FT <BT>")
-    wx = random.choice(['SUNNY', 'SUN', 'CLOUDY', 'CLOUDS', 'RAIN', 'HOT', \
-            'HUMID', 'ICE', 'SNOW', 'SLEET', 'BREEZY' ])
-    temp = random.randint(32,100)
+    temp = random.randint(10,100)
+    if temp < 30:
+        wx = random.choice(['SUNNY', 'SUN', 'BREEZY', 'CLOUDY', 'CLOUDS', 
+            'CLEAR', 'COLD', 'ICE', 'SNOW', 'SLEET'])
+    elif temp > 85: 
+        wx = random.choice(['SUNNY', 'SUN', 'BREEZY', 'CLOUDY', 'CLOUDS', 
+            'CLEAR', 'STORMS', 'HUMID', 'HOT'])
+    else:
+        wx = random.choice(['SUNNY', 'SUN', 'BREEZY', 'CLOUDY', 'CLOUDS', 
+            'CLEAR', 'RAIN', 'COOL'])
     print("WX HR", wx, "ES TEMP", temp, "DF <BT>")
     print("OK HW? <AR>", theirCall, "DE", myCall, "K")
     print('')
