@@ -21,11 +21,10 @@
 # CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import random
 import sys
 
 def calc_weight(in_string, CWPM, FWPM):
-    ''' calculate weight and speed '''
+    ''' calculate the CW weight of a sting and sending time based on WPM '''
     weight_dict = {'A' :  5, 'B' :  9, 'C' : 11, 'D' :  7, 'E' :  1, \
                    'F' :  9, 'G' :  9, 'H' :  7, 'I' :  3, 'J' :  9, \
                    'K' :  9, 'L' :  9, 'M' :  7, 'N' :  5, 'O' : 11, \
@@ -33,7 +32,8 @@ def calc_weight(in_string, CWPM, FWPM):
                    'U' :  7, 'V' :  9, 'W' :  9, 'X' : 11, 'Y' : 13, \
                    'Z' : 11, '1' : 17, '2' : 15, '3' : 13, '4' : 11, \
                    '5' :  9, '6' : 11, '7' : 13, '8' : 15, '9' : 17, \
-                   '0' : 19, ',' : 19, '?' : 15, '.' : 17, '/' : 13}
+                   '0' : 19, ',' : 19, '?' : 15, '.' : 17, '/' : 13  \
+                   '+' : 13, '<' : 15, '=' : 13 }
 
     num_spaces = len([s for s in in_string if s == ' '])
     char_list = [s.upper() for s in in_string if s != ' ']
@@ -46,13 +46,13 @@ def calc_weight(in_string, CWPM, FWPM):
 
     print(" input: '", in_string, "'", sep='')
     #print("number of spaces: ", num_spaces)
-    #print("number of characers: ", len(char_list))
+    #print("number of characters: ", len(char_list))
     #print("string to calc: ", char_list)
     #print("weight list: ", weight_list)
     if CWPM == FWPM:
         print(" speed:", CWPM, "WPM")
     else: 
-        print(" speed:", CWPM, "WMP with Farnsworth of", FWPM, "WPM")
+        print(" speed:", CWPM, "Character WPM with Farnsworth of", FWPM, "WPM")
     print("weight:", weight)
     print("  time:", send_time, "seconds")
     print(" ")
