@@ -72,13 +72,18 @@ if [ "$3" != "" ]; then
 fi
 
 echo -n "working on it... "
-sox -n -r 22050 -c 1 silence.mp3 trim 0.0 $delay > /dev/null 2>&1
+if (( $(echo "$delay > 0.026" |bc -l) )); then
+    dur=$(echo $delay - 0.026 | bc)
+else 
+    dur="0.0"
+fi 
+sox -n -r 22050 -c 1 silence.mp3 trim 0.0 $dur > /dev/null 2>&1
 for c in $chars; do
     echo $c | ebook2cw -s22050 -f 650 -w $wpm -p - > /dev/null 2>&1
     c=$(map_char $c)
     say -r200 -o sayit $(echo "$c") > /dev/null 2>&1
     sox sayit.aiff sayit.mp3 > /dev/null 2>&1
-    sox Chapter0000.mp3 sayit.mp3 silence.mp3 $c.mp3 norm > /dev/null 2>&1
+    sox Chapter0000.mp3 silence.mp3 sayit.mp3 silence.mp3 $c.mp3 norm > /dev/null 2>&1
     rm Chapter0000.mp3 sayit.aiff sayit.mp3 
 done
 rm silence.mp3
