@@ -37,8 +37,6 @@ chmod +x inst_req.py
 chars=$(./inst_req.py)
 rm inst_req.py
 
-#chars="K M R S <SK> U A P T L O W I . N J E <BT> F 0 Y , V G 5 / Q 9 Z H <AR> 3 8 B ? 4 2 7 C 1 <BK> D 6 X"
-
 function map_char {
     local char=""
     case $1 in
@@ -51,6 +49,7 @@ function map_char {
         '<BK>') char="BK" ;;
         '<SK>') char="SK" ;;
         '<KN>') char="KN" ;;
+        '<AS>') char="AS" ;;
         *) char=$1 ;;
     esac
     echo $char 
@@ -72,21 +71,27 @@ if [ "$3" != "" ]; then
 fi
 
 echo -n "working on it... "
+add_silence=0
 if (( $(echo "$delay > 0.026" |bc -l) )); then
     dur=$(echo $delay - 0.026 | bc)
-else 
-    dur="0.0"
+    sox -n -r 22050 -c 1 silence.mp3 trim 0.0 $dur > /dev/null 2>&1
+    add_silence=1
 fi 
-sox -n -r 22050 -c 1 silence.mp3 trim 0.0 $dur > /dev/null 2>&1
 for c in $chars; do
     echo $c | ebook2cw -s22050 -f 650 -w $wpm -p - > /dev/null 2>&1
     c=$(map_char $c)
     say -r200 -o sayit $(echo "$c") > /dev/null 2>&1
     sox sayit.aiff sayit.mp3 > /dev/null 2>&1
-    sox Chapter0000.mp3 silence.mp3 sayit.mp3 silence.mp3 $c.mp3 norm > /dev/null 2>&1
+    if [ $add_silence -eq 1 ]; then
+        sox Chapter0000.mp3 silence.mp3 sayit.mp3 silence.mp3 $c.mp3 norm > /dev/null 2>&1
+    else
+        sox Chapter0000.mp3 sayit.mp3 $c.mp3 norm > /dev/null 2>&1
+    fi 
     rm Chapter0000.mp3 sayit.aiff sayit.mp3 
 done
-rm silence.mp3
+if [ $add_silance -eq 1 ]; then
+    rm silence.mp3
+fi
 
 filse=""
 for c in $chars; do
