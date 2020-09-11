@@ -31,8 +31,8 @@ def fixup_file(in_file, out_file):
             '`' : '',
             '’' : '',
             '‘' : '',
-            '!' : '',
-            '#' : '',
+            '!' : '.',
+            '#' : 'No. ',
             '$' : '',
             '%' : '',
             '^' : '',
@@ -41,8 +41,8 @@ def fixup_file(in_file, out_file):
             '@' : '',
             '(' : '',
             ')' : '',
-            '-' : '',
-            '_' : '',
+            '-' : ' ',
+            '_' : ' ',
             '|' : '',
             '+' : '',
             '=' : '',
@@ -60,7 +60,8 @@ def fixup_file(in_file, out_file):
             '—' : ',', 
             '\'' : '',
             '\\' : '/',
-            '\t' : '    '
+            '\t' : '    ',
+            '\n' : ' '
             }
 
     # read input file
@@ -71,9 +72,9 @@ def fixup_file(in_file, out_file):
     # replace mapped characters
     outLines = []
     for line in inLines: 
-        # add spaces for paragraph separator 
+        # add spaces and paragraph separator for blank lines
         if line == "\n":
-            line = "  \n  "
+            line = "<BT> \n"
         else:
             for char in map_chars:
                 line = str(line).replace(char, map_chars[char]).upper()
@@ -89,3 +90,4 @@ if __name__ == "__main__":
     in_file = str(sys.argv[1])
     out_file = str(sys.argv[2])
     fixup_file(in_file, out_file)
+
