@@ -78,6 +78,9 @@ def fixup_file(in_file, out_file):
         else:
             for char in map_chars:
                 line = str(line).replace(char, map_chars[char]).upper()
+
+        # filter out any non-ascii characters
+        line = ''.join(c for c in line if ord(c)<128)
         outLines.append(line)
     
     # write output file
